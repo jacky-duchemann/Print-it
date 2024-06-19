@@ -17,14 +17,49 @@ const slides = [
 	}
 ]
 
-document.querySelector('.arrow_left').addEventListener('click', () => {
-	currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-	showSlide();
-  });
-  
-  document.querySelector('.arrow_right').addEventListener('click', () => {
-	currentSlide = (currentSlide + 1) % slides.length;
-	showSlide();
-  });
-  
-console.log(slides.length)
+// Section du carousel dynamique //
+
+// Sélectionner les éléments nécessaires
+const leftArrow = document.querySelector('.arrow_left');
+const rightArrow = document.querySelector('.arrow_right');
+const bannerImg = document.querySelector('.banner-img');
+const tagline = document.getElementById('tagline');
+const dots = document.querySelectorAll('.dot');
+
+let currentSlide = 0;
+
+// Fonction pour mettre à jour l'image, le texte et les points indicateurs
+const updateCarousel = () => {
+	bannerImg.src = `./assets/images/slideshow/${slides[currentSlide].image}`;
+	tagline.innerHTML = slides[currentSlide].tagLine; // ajout dynamique de la tagline de l'image en cours d'affichage
+	dots.forEach((dot, index) => {
+		if (index === currentSlide) {
+			dot.classList.add('dot_selected'); //ajoute la class "dot_selected" dynamiquement au dot selectionné.
+		} else {
+			dot.classList.remove('dot_selected');
+		}
+	});
+};
+
+// Ajouter des event listeners aux flèches
+leftArrow.addEventListener('mousedown', (event) => {
+	if (event.button === 0) { // filtre clique gauche
+		currentSlide = (currentSlide > 0) ? currentSlide - 1 : slides.length - 1;
+		updateCarousel(); // appel de la fonction pour mettre à jour l'image, le texte et les points indicateurs
+	}
+});
+
+rightArrow.addEventListener('mousedown', (event) => {
+	if (event.button === 0) { // filtre clique gauche
+		currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0;
+		updateCarousel(); // appel de la fonction pour mettre à jour l'image, le texte et les points indicateurs
+	}
+});
+
+// Ajouter des event listeners aux points indicateurs, quand on clique sur un dot il devient "dot_selected" a travers la fonction updateCarousel()
+dots.forEach((dot, index) => {
+	dot.addEventListener('click', () => {
+		currentSlide = index;
+		updateCarousel();
+	});
+});
