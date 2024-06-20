@@ -46,6 +46,8 @@ leftArrow.addEventListener('mousedown', (event) => {
 	if (event.button === 0) { // filtre clique gauche
 		currentSlide = (currentSlide > 0) ? currentSlide - 1 : slides.length - 1;
 		updateCarousel(); // appel de la fonction pour mettre à jour l'image, le texte et les points indicateurs
+	} else if (event.button === 2) {
+		console.log('Mauvais clique de la souris !');
 	}
 });
 
@@ -53,6 +55,8 @@ rightArrow.addEventListener('mousedown', (event) => {
 	if (event.button === 0) { // filtre clique gauche
 		currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0;
 		updateCarousel(); // appel de la fonction pour mettre à jour l'image, le texte et les points indicateurs
+	} else if (event.button === 2) {
+		console.log('Mauvais clique de la souris !');
 	}
 });
 
@@ -63,3 +67,7 @@ dots.forEach((dot, index) => {
 		updateCarousel();
 	});
 });
+
+ // Empêcher le menu contextuel sur clic droit
+ leftArrow.addEventListener('contextmenu', (event) => event.preventDefault());
+ rightArrow.addEventListener('contextmenu', (event) => event.preventDefault());
